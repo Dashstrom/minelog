@@ -1,4 +1,3 @@
-
 import os
 import re
 import gzip
@@ -34,10 +33,9 @@ def match_lines(
 
 
 def search(
-    regex: str, path_archives: str = DEFAULT_PATH
+    regex: re.Pattern, path_archives: str = DEFAULT_PATH
 ) -> Generator[str, None, None]:
     """Search into minecraft logs."""
-    patern = re.compile(regex)
     for archive in os.listdir(path_archives):
         if match := RE_FILE_ARCHIVE_GROUP.fullmatch(archive):
             path = os.path.join(path_archives, archive)
@@ -48,12 +46,12 @@ def search(
                     raw_log += data
                     data = gzipfile.read(BUFFER_SIZE)
             text_log = raw_log.decode("ansi")
-            yield from match_lines(text_log, patern, match[1])
+            yield from match_lines(text_log, regex, match[1])
     latest = os.path.join(path_archives, "latest.log")
     try:
         with open(latest, "r", encoding="ansi") as file:
             text = file.read()
-        yield from match_lines(text, patern, "latest.log")
+        yield from match_lines(text, regex, "latest.log")
     except OSError:
         pass
 
@@ -64,10 +62,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Scearch into Minecraft logs")
     parser.add_argument("matcher", help="text or regex to match")
     parser.add_argument("-p", "--path", help="path to search")
+    parser.add_argument("-i", "--ignorecase", help="ignorecase",
+                        action="store_true")
     parser.add_argument("-r", "--regex", help="allow to use regex",
                         action="store_true")
     args = parser.parse_args()
-    regex = args.matcher if args.regex else re.escape(args.matcher)
+    regex = re.compile(args.matcher if args.regex else re.escape(args.matcher),
+                       flags=re.IGNORECASE if args.ignorecase else 0)
     if args.path:
         searcher = search(regex, args.path)
     else:
