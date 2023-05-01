@@ -1,7 +1,8 @@
 name: docs
 
-on:
-  - push
+on: [push, pull_request, workflow_dispatch]
+permissions:
+    contents: write
 
 jobs:
   docs:
@@ -16,7 +17,16 @@ jobs:
           python-version: "3.7"
 
       - name: Install dependencies
-        run: pip install tox
+        run: pip install -r requirements-docs.txt
 
-      - name: Build with tox
-        run: tox -e docs
+      - name: Build with sphinx-build
+        run: sphinx-build -W -b html docs public
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        with:
+          publish_branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          force_orphan: true

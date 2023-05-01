@@ -16,7 +16,7 @@ jobs:
           python-version: "3.7"
 
       - name: Install dependencies
-        run: pip install tox
+        run: pip install pre-commit
 
       - name: Linting with tox
-        run: tox -e lint
+        run: pre-commit run --all-files
