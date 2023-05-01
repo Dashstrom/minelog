@@ -1,0 +1,7 @@
+-r requirements-docs.txt
+-r requirements-lint.txt
+-r requirements-test.txt
+build>=0.10.0
+pre-commit>=3.2.0
+tox>=4.0.0
+twine>=4.0.0

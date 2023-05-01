@@ -1,0 +1,26 @@
+name: tests
+
+on:
+  - push
+
+jobs:
+  tests:
+    name: Tests on ${{ matrix.os }} with python {{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, windows-2022, macos-12]
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: pip install tox
+
+      - name: Test with tox
+        run: tox -e py

@@ -1,0 +1,31 @@
+name: publish
+
+on:
+  push:
+    tags:
+      - '**'
+
+jobs:
+  publish:
+    name: Publish on PyPI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.6
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.6"
+      - name: Install dependencies
+        run: pip install tox
+
+      - name: Run all tests with tox
+        run: tox
+
+      - name: Build sdist
+        run: pipx run build --sdist --wheel
+
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
