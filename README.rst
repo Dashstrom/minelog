@@ -1,25 +1,21 @@
 minelog
 =======
 
-.. image:: https://github.com/Dashstrom/blabla/actions/workflows/docs.yml/badge.svg
-    :target: https://github.com/Dashstrom/blabla/actions/workflows/docs.yml
+.. image:: https://github.com/Dashstrom/minelog/actions/workflows/docs.yml/badge.svg
+    :target: https://github.com/Dashstrom/minelog/actions/workflows/docs.yml
     :alt: CI : Docs
 
-.. image:: https://github.com/Dashstrom/blabla/actions/workflows/lint.yml/badge.svg
-    :target: https://github.com/Dashstrom/blabla/actions/workflows/lint.yml
+.. image:: https://github.com/Dashstrom/minelog/actions/workflows/lint.yml/badge.svg
+    :target: https://github.com/Dashstrom/minelog/actions/workflows/lint.yml
     :alt: CI : Lint
 
-.. image:: https://github.com/Dashstrom/blabla/actions/workflows/tests.yml/badge.svg
-    :target: https://github.com/Dashstrom/blabla/actions/workflows/tests.yml
+.. image:: https://github.com/Dashstrom/minelog/actions/workflows/tests.yml/badge.svg
+    :target: https://github.com/Dashstrom/minelog/actions/workflows/tests.yml
     :alt: CI : Tests
 
-.. image:: https://github.com/Dashstrom/blabla/actions/workflows/publish.yml/badge.svg
-    :target: https://github.com/Dashstrom/blabla/actions/workflows/publish.yml
+.. image:: https://github.com/Dashstrom/minelog/actions/workflows/publish.yml/badge.svg
+    :target: https://github.com/Dashstrom/minelog/actions/workflows/publish.yml
     :alt: CI : Publish
-
-.. image:: https://github.com/Dashstrom/blabla/actions/workflows/audit.yml/badge.svg
-    :target: https://github.com/Dashstrom/blabla/actions/workflows/audit.yml
-    :alt: CI : Audit
 
 .. image:: https://img.shields.io/pypi/v/minelog.svg
     :target: https://pypi.org/project/minelog
