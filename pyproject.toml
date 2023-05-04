@@ -14,7 +14,7 @@ build-backend = "setuptools.build_meta"
 name = "minelog"
 description = "Script for find somethings easily in your minecraft logs."
 readme = "README.rst"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 license.file = "LICENSE"
 authors = [
   { name="Dashstrom", email="dashstrom.pro@gmail.com" },
@@ -50,7 +50,6 @@ classifiers = [
   "Operating System :: OS Independent",
 
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.7",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
@@ -98,7 +97,7 @@ tox = [
 ]
 pre-commit = [
   "minelog[tox]",
-  "pre-commit>=3.2.0"
+  "pre-commit>=3.0.0"
 ]
 docs = [
   "sphinx>=5.0.0",
@@ -199,7 +198,7 @@ exclude = [
 ]
 line-length = 79
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-target-version = "py37"
+target-version = "py38"
 
 [tool.ruff.per-file-ignores]
 # E402 Module level import not at top of file
@@ -224,7 +223,7 @@ max-complexity = 10
 
 [tool.black]
 line-length = 79
-target-version = ["py311", "py310", "py39", "py38", "py37"]
+target-version = ["py311", "py310", "py39", "py38"]
 
 
 # ----------------------------------------------------------------------
@@ -288,7 +287,3 @@ strict_equality = true
 
 # Config file
 warn_unused_configs = true
-
-[[tool.mypy.overrides]]
-module = ["lxml"]
-ignore_missing_imports = true

@@ -48,6 +48,7 @@ endif
 # Configuration
 # ----------------------------------------------------------------------
 
+GIT=git
 PIP=$(PY) -m pip
 VENV_PY=$(VENV)python
 VENV_PIP=$(VENV_PY) -m pip
@@ -69,7 +70,13 @@ LS := $(PY) -c "import sys,os;print('\n'.join(os.listdir(os.path.abspath(sys.arg
 help:  ## Show current message
 	@$(EXTRACT_HELP) < $(MAKEFILE_LIST)
 
-$(VENV_ACTIVATE): $(DEPS)
+.git:
+	$(GIT) init
+	$(GIT) add *
+	$(GIT) commit -m "Initial commit"
+	$(GIT) branch -M main
+
+$(VENV_ACTIVATE): $(DEPS) .git
 	$(MAKE) clean
 	$(PY) -m venv venv
 	$(VENV_PIP) install --upgrade pip
