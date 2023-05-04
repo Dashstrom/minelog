@@ -1,12 +1,16 @@
 name: docs
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+
 permissions:
     contents: write
 
 jobs:
   docs:
-    name: Build docs
+    name: Docs
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
@@ -16,13 +20,10 @@ jobs:
         with:
           python-version: "3.7"
 
-      - name: Install dependencies
-        run: pip install -r requirements-docs.txt
+      - name: Build docs with Make
+        run: make docs
 
-      - name: Build with sphinx-build
-        run: sphinx-build -W -b html docs public
-
-      - name: Deploy
+      - name: Deploy docs
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         with:

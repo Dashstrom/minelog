@@ -51,7 +51,7 @@ endif
 PIP=$(PY) -m pip
 VENV_PY=$(VENV)python
 VENV_PIP=$(VENV_PY) -m pip
-DEPS=$(wildcart *requirements*.txt)
+DEPS=pyproject.toml
 
 .PHONY: help clean coverage dist docs install lint venv
 .DEFAULT_GOAL := help
@@ -66,44 +66,51 @@ LS := $(PY) -c "import sys,os;print('\n'.join(os.listdir(os.path.abspath(sys.arg
 # Commands
 # ----------------------------------------------------------------------
 
-help:  ## show current message
+help:  ## Show current message
 	@$(EXTRACT_HELP) < $(MAKEFILE_LIST)
 
 $(VENV_ACTIVATE): $(DEPS)
 	$(MAKE) clean
 	$(PY) -m venv venv
 	$(VENV_PIP) install --upgrade pip
-	$(VENV_PIP) install -r requirements-dev.txt
-	$(VENV_PIP) install -e .
+	$(VENV_PIP) install -e .[dev]
 	$(VENV)pre-commit install
 
-setup: $(VENV_ACTIVATE)  ## create virtual environment and install pre-commit
+setup: $(VENV_ACTIVATE)  ## Create virtual environment and install all the stuff
 
-clean:  ## remove all build, test, coverage and Python artifacts
-	$(RM_GLOB) 'build/' 'dist/' '.eggs/' '.tox/' '.coverage' 'htmlcov/' '.pytest_cache' '.mypy_cache' '.ruff_cache' '.venv' 'venv' '**/*.egg-info' '**/*.egg' '**/__pycache__' '**/*~' '**/*.pyc' '**/*.pyo'
+clean:  ## Remove all build, test, coverage and Python artifacts
+	$(RM_GLOB) 'build/' 'dist/' 'public/' '.eggs/' '.tox/' '.coverage' 'htmlcov/' '.pytest_cache' '.mypy_cache' '.ruff_cache' '.venv' 'venv' '**/*.egg-info' '**/*.egg' '**/__pycache__' '**/*~' '**/*.pyc' '**/*.pyo'
 
-lint: setup  ## check style with pre-commit, ruff, black and mypy
+format: setup  ## Fromat style with pre-commit, ruff, black and mypy
 	$(VENV)pre-commit run --all-files
 
-tests: setup  ## run all tests
+lint: setup  ## Check style with ruff, black and mypy
+	$(VENV)tox -e lint
+
+tests-all: setup  ## Run all tests
 	$(VENV)tox -p
 
-coverage: setup  ## check code coverage quickly with the default Python
+tests: setup  ## Run tests
+	$(VENV)tox -e tests
+
+coverage: setup  ## Check code coverage quickly with the default Python
 	$(VENV)coverage run --source minelog -m pytest
 	$(VENV)coverage report -m
 	$(VENV)coverage html
 	$(BROWSER) htmlcov/index.html
 
-docs: setup  ## generate Sphinx HTML documentation
+docs: setup  ## Generate Sphinx HTML documentation
 	$(VENV)sphinx-build -W -b html docs public
+
+open-docs: docs  ## Open docs
 	$(BROWSER) public/index.html
 
-dist: clean setup  ## builds source and wheel package
+dist: clean setup  ## Builds source and wheel package
 	$(VENV_PY) -m build
 	$(LS) dist/
 
-release: dist  ## package and upload a release
+release: dist  ## Package and upload a release
 	$(VENV)twine upload dist/*
 
-install: clean  ## install the package to the active Python's site-packages
+install: clean  ## Install the package to the active Python's site-packages
 	$(PIP) install .

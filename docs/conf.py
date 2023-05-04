@@ -15,6 +15,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
@@ -25,6 +26,7 @@ copyright = minelog.info.__copyright__
 author = minelog.info.__author__
 version = minelog.info.__version__
 release = minelog.info.__version__
+
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
