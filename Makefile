@@ -49,7 +49,7 @@ endif
 
 SHELL_NAME=$(shell $(PY) -c 'import pathlib, sys;print(pathlib.Path(" ".join(sys.argv[1:])).name)' $(SHELL))
 ifeq (sh.exe,$(SHELL_NAME))
-	VENV=venv\\Scripts\\
+	VENV=venv/Scripts/
 	VENV_ACTIVATE=$(VENV)Activate.ps1
 else ifeq (sh,$(SHELL_NAME))
 	VENV=venv/bin/
@@ -62,7 +62,7 @@ else ifeq (zsh,$(SHELL_NAME))
 	VENV_ACTIVATE=$(VENV)activate
 else
 	ifeq (win32,$(shell $(PY) -c "print(__import__('sys').platform)"))
-		VENV=venv\\Scripts\\
+		VENV=venv/Scripts/
 		VENV_ACTIVATE=$(VENV)Activate.ps1
 	else
 		VENV=venv/bin/
