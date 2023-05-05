@@ -38,6 +38,7 @@ You can install "minelog" via `pip <https://pypi.org/project/pip/>`_ from `PyPI 
 
 ..  code-block:: bash
 
+    pip install -U pip
     pip install minelog
 
 Usage

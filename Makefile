@@ -3,43 +3,43 @@
 # ----------------------------------------------------------------------
 
 ifeq (ok,$(shell test -e /dev/null 2>&1 && echo ok))
-NULL_STDERR=2>/dev/null
+	NULL_STDERR=2>/dev/null
 else
-NULL_STDERR=2>NUL
+	NULL_STDERR=2>NUL
 endif
 
 ifndef PY
-ifeq (1,$(shell py -3.8 -c "print(1)" $(NULL_STDERR)))
-PY=py -3.8
-endif
-endif
-
-ifndef PY
-ifeq (1,$(shell py -3 -c "print(1)" $(NULL_STDERR)))
-PY=py -3
-endif
+	ifeq (1,$(shell py -3.8 -c "print(1)" $(NULL_STDERR)))
+		PY=py -3.8
+	endif
 endif
 
 ifndef PY
-ifeq (1,$(shell python3.8 -c "print(1)" $(NULL_STDERR)))
-PY=python3.8
-endif
-endif
-
-ifndef PY
-ifeq (1,$(shell python3 -c "print(1)" $(NULL_STDERR)))
-PY=python3
-endif
+	ifeq (1,$(shell py -3 -c "print(1)" $(NULL_STDERR)))
+		PY=py -3
+	endif
 endif
 
 ifndef PY
-ifeq (1,$(shell python -c "print(1)" $(NULL_STDERR)))
-PY=python
-endif
+	ifeq (1,$(shell python3.8 -c "print(1)" $(NULL_STDERR)))
+		PY=python3.8
+	endif
 endif
 
 ifndef PY
-$(error Could not detect Python interpreter automatically, please use PY environment variable.)
+	ifeq (1,$(shell python3 -c "print(1)" $(NULL_STDERR)))
+		PY=python3
+	endif
+endif
+
+ifndef PY
+	ifeq (1,$(shell python -c "print(1)" $(NULL_STDERR)))
+		PY=python
+	endif
+endif
+
+ifndef PY
+	$(error Could not detect Python interpreter automatically, please use PY environment variable.)
 endif
 
 
@@ -47,12 +47,23 @@ endif
 # OS dependent configuration
 # ----------------------------------------------------------------------
 
-ifeq (win32,$(shell $(PY) -c "print(__import__('sys').platform)"))
-VENV=venv\\Scripts\\
-VENV_ACTIVATE=$(VENV)Activate.ps1
+ifeq (sh.exe,$(notdir $(SHELL)))
+	VENV=venv\\Scripts\\
+	VENV_ACTIVATE=$(VENV)Activate.ps1
+else ifeq (sh,$(notdir $(SHELL)))
+	VENV=venv/bin/
+	VENV_ACTIVATE=$(VENV)activate
+else ifeq (bash,$(notdir $(SHELL)))
+	VENV=venv/bin/
+	VENV_ACTIVATE=$(VENV)activate
 else
-VENV=venv/bin/
-VENV_ACTIVATE=$(VENV)activate
+	ifeq (win32,$(shell $(PY) -c "print(__import__('sys').platform)"))
+		VENV=venv\\Scripts\\
+		VENV_ACTIVATE=$(VENV)Activate.ps1
+	else
+		VENV=venv/bin/
+		VENV_ACTIVATE=$(VENV)activate
+	endif
 endif
 
 
@@ -64,7 +75,7 @@ GIT=git
 PIP=$(PY) -m pip
 VENV_PY=$(VENV)python
 VENV_PIP=$(VENV_PY) -m pip
-DEPS=pyproject.toml
+DEPS=pyproject.toml Makefile
 
 .PHONY: help clean coverage dist docs install lint venv
 .DEFAULT_GOAL := help
@@ -89,6 +100,7 @@ help:  ## Show current message
 	$(GIT) branch -M main
 
 $(VENV_ACTIVATE): $(DEPS) .git
+	echo $(SHELL) $(notdir $(SHELL))
 	$(MAKE) clean
 	$(PY) -m venv venv
 	$(VENV_PIP) install --upgrade pip
