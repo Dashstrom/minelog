@@ -9,7 +9,7 @@ NULL_STDERR=2>NUL
 endif
 
 ifndef PY
-ifeq (1,$(shell python3 -c "print(1)" $(NULL_STDERR)))
+ifeq (1,$(shell python3.8 -c "print(1)" $(NULL_STDERR)))
 PY=python3.8
 endif
 endif
@@ -21,7 +21,7 @@ endif
 endif
 
 ifndef PY
-ifeq (1,$(shell py -3 -c "print(1)" $(NULL_STDERR)))
+ifeq (1,$(shell py -3.8 -c "print(1)" $(NULL_STDERR)))
 PY=py -3.8
 endif
 endif
