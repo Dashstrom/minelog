@@ -47,13 +47,17 @@ endif
 # OS dependent configuration
 # ----------------------------------------------------------------------
 
-ifeq (sh.exe,$(notdir $(SHELL)))
+SHELL_NAME=$(shell $(PY) -c 'import pathlib, sys;print(pathlib.Path(" ".join(sys.argv[1:])).name)' $(SHELL))
+ifeq (sh.exe,$(SHELL_NAME))
 	VENV=venv\\Scripts\\
 	VENV_ACTIVATE=$(VENV)Activate.ps1
-else ifeq (sh,$(notdir $(SHELL)))
+else ifeq (sh,$(SHELL_NAME))
 	VENV=venv/bin/
 	VENV_ACTIVATE=$(VENV)activate
-else ifeq (bash,$(notdir $(SHELL)))
+else ifeq (bash,$(SHELL_NAME))
+	VENV=venv/bin/
+	VENV_ACTIVATE=$(VENV)activate
+else ifeq (zsh,$(SHELL_NAME))
 	VENV=venv/bin/
 	VENV_ACTIVATE=$(VENV)activate
 else
@@ -100,7 +104,7 @@ help:  ## Show current message
 	$(GIT) branch -M main
 
 $(VENV_ACTIVATE): $(DEPS) .git
-	echo $(SHELL) $(notdir $(SHELL))
+	echo $(SHELL) $(SHELL_NAME)
 	$(MAKE) clean
 	$(PY) -m venv venv
 	$(VENV_PIP) install --upgrade pip
