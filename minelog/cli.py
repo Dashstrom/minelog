@@ -13,7 +13,7 @@ from .info import __copyright__, __description__, __version__
 @click.option(
     "-d",
     "--directory",
-    help="path to search",
+    help="Path of logs",
     type=click.Path(  # type: ignore[type-var]
         exists=True,
         dir_okay=True,
@@ -24,24 +24,30 @@ from .info import __copyright__, __description__, __version__
 @click.option(
     "-p",
     "--pattern",
-    help="path to search",
+    help="Pattern used for search log.",
     type=str,
     default=r"^(.*)$",
 )
-@click.option("-r", "--repl", help="path to search", type=str, default=r"\1")
+@click.option(
+    "-r",
+    "--repl",
+    help="Replacement of match.",
+    type=str,
+    default=r"\1",
+)
 @click.option(
     "-u",
     "--unique",
     is_flag=True,
     default=False,
-    help="path to search",
+    help="Return only unique match.",
 )
 @click.option(
     "-s",
     "--sort",
     is_flag=True,
     default=False,
-    help="path to search",
+    help="Sort match in alphabetical order.",
 )
 def minelog_cli(
     directory: Optional[pathlib.Path],

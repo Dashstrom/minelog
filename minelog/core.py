@@ -11,7 +11,7 @@ RE_FILE_ARCHIVE_GROUP = re.compile(
     r"^(20[0-9]{2}-[01][0-9]-[0-3][0-9])-([0-9]{1,2}).log.gz$",
 )
 BUFFER_SIZE = 1024 * 1024
-RegexType = Union[str, bytes, re.Pattern[bytes], re.Pattern[str]]
+RegexType = Union[str, bytes, "re.Pattern[bytes]", "re.Pattern[str]"]
 
 
 def minecraft_path() -> pathlib.Path:
@@ -29,7 +29,7 @@ class LogMatch:
 
     __slots__ = "match", "path"
 
-    def __init__(self, match: re.Match[bytes], path: pathlib.Path) -> None:
+    def __init__(self, match: "re.Match[bytes]", path: pathlib.Path) -> None:
         """Create a LogMatch instance."""
         self.match = match
         self.path = path
@@ -50,7 +50,7 @@ class MineLog:
 
     def iteropen(self) -> Iterator[Tuple[pathlib.Path, IO[bytes]]]:
         """Iterate over all file and open them."""
-        for archive_path in self.folder.iterdir():
+        for archive_path in sorted(self.folder.iterdir()):
             match = RE_FILE_ARCHIVE_GROUP.fullmatch(archive_path.name)
             if match:
                 with gzip.GzipFile(archive_path, "r") as gzipfile:
@@ -62,7 +62,7 @@ class MineLog:
         except FileNotFoundError:
             pass
 
-    def compile(self, pattern: RegexType) -> re.Pattern[bytes]:
+    def compile(self, pattern: RegexType) -> "re.Pattern[bytes]":
         """Compile the regex."""
         if isinstance(pattern, re.Pattern):
             if isinstance(pattern.pattern, str):
