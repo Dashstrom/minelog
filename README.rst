@@ -4,27 +4,21 @@ minelog
 .. image:: https://github.com/Dashstrom/minelog/actions/workflows/docs.yml/badge.svg
     :target: https://github.com/Dashstrom/minelog/actions/workflows/docs.yml
     :alt: CI : Docs
-
 .. image:: https://github.com/Dashstrom/minelog/actions/workflows/lint.yml/badge.svg
     :target: https://github.com/Dashstrom/minelog/actions/workflows/lint.yml
     :alt: CI : Lint
-
 .. image:: https://github.com/Dashstrom/minelog/actions/workflows/tests.yml/badge.svg
     :target: https://github.com/Dashstrom/minelog/actions/workflows/tests.yml
     :alt: CI : Tests
-
 .. image:: https://github.com/Dashstrom/minelog/actions/workflows/publish.yml/badge.svg
     :target: https://github.com/Dashstrom/minelog/actions/workflows/publish.yml
     :alt: CI : Publish
-
 .. image:: https://img.shields.io/pypi/v/minelog.svg
     :target: https://pypi.org/project/minelog
     :alt: PyPI : minelog
-
 .. image:: https://img.shields.io/pypi/pyversions/minelog.svg
     :target: https://pypi.org/project/minelog
     :alt: Python : versions
-
 .. image:: https://img.shields.io/badge/license-GNU%20GPL%20v3.0-green.svg
     :target: https://github.com/Dashstrom/minelog/blob/main/LICENSE
     :alt: License : GNU GPL v3.0
@@ -38,7 +32,7 @@ You can install "minelog" via `pip <https://pypi.org/project/pip/>`_ from `PyPI 
 
 ..  code-block:: bash
 
-    pip install -U pip
+    pip install -U pip setuptools virtualenv
     pip install minelog
 
 Usage
@@ -48,8 +42,8 @@ Show all players IPs.
 
 ..  code-block:: bash
 
-    minelog -d "..\logs" -p "^.* ([a-zA-Z0-9_]+)\[\/(.*\d+(?:\.\d+){3}):\d+\].*$" -u -s -r "\1,\2"
-    minelog -d "..\logs" -p "^.*name=([a-zA-Z0-9_]+).*/(.*\d+(?:\.\d+){3}):\d+.*$" -u -s -r "\1,\2"
+    minelog -d "logs" -p "^.* ([a-zA-Z0-9_]+)\[\/(.*\d+(?:\.\d+){3}):\d+\].*$" -u -s -r "\1,\2"
+    minelog -d "logs" -p "^.*name=([a-zA-Z0-9_]+).*/(.*\d+(?:\.\d+){3}):\d+.*$" -u -s -r "\1,\2"
 
 
 Developpement
@@ -67,8 +61,8 @@ Installation
 
     sudo apt update -y && sudo apt upgrade -y
     sudo apt install mypy python3.8-venv
-    git clone https://github.com/Dashstrom/minelog
-    cd minelog
+    git clone https://github.com/Dashstrom/minelog && cd minelog
+    pip install -U pip setuptools virtualenv
     make setup
 
 Makefile

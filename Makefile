@@ -47,26 +47,39 @@ endif
 # OS dependent configuration
 # ----------------------------------------------------------------------
 
+BLANK :=
 SHELL_NAME=$(shell $(PY) -c 'import pathlib, sys;print(pathlib.Path(" ".join(sys.argv[1:])).name)' $(SHELL))
 ifeq (sh.exe,$(SHELL_NAME))
-	VENV=venv/Scripts/
-	VENV_ACTIVATE=$(VENV)Activate.ps1
+	VENV=venv\\Scripts\\$(BLANK)
+	LIB=venv\\Lib\\site-packages\\$(BLANK)
+	MARKER=venv\\marker
+	EXE=.exe
 else ifeq (sh,$(SHELL_NAME))
 	VENV=venv/bin/
-	VENV_ACTIVATE=$(VENV)activate
+	LIB=venv/Lib/site-packages/
+	MARKER=venv/marker
+	EXE=
 else ifeq (bash,$(SHELL_NAME))
 	VENV=venv/bin/
-	VENV_ACTIVATE=$(VENV)activate
+	LIB=venv/Lib/site-packages/
+	MARKER=venv/marker
+	EXE=
 else ifeq (zsh,$(SHELL_NAME))
 	VENV=venv/bin/
-	VENV_ACTIVATE=$(VENV)activate
+	LIB=venv/Lib/site-packages/
+	MARKER=venv/marker
+	EXE=
 else
 	ifeq (win32,$(shell $(PY) -c "print(__import__('sys').platform)"))
-		VENV=venv/Scripts/
-		VENV_ACTIVATE=$(VENV)Activate.ps1
+		VENV=venv\\Scripts\\$(BLANK)
+		LIB=venv\\Lib\\site-packages\\$(BLANK)
+		MARKER=venv\\marker
+		EXE=.exe
 	else
 		VENV=venv/bin/
-		VENV_ACTIVATE=$(VENV)activate
+		LIB=venv/Lib/site-packages/
+		MARKER=venv/marker
+		EXE=
 	endif
 endif
 
@@ -77,25 +90,25 @@ endif
 
 GIT=git
 PIP=$(PY) -m pip
-VENV_PY=$(VENV)python
-VENV_PIP=$(VENV_PY) -m pip
-DEPS=pyproject.toml Makefile
-
-.PHONY: help clean coverage dist docs install lint venv
-.DEFAULT_GOAL := help
+VENV_PY=$(VENV)python$(EXE)
+VENV_PIP=$(VENV)pip$(EXE)
 
 RM_GLOB := $(PY) -c "import shutil,sys,pathlib;[shutil.rmtree(sp, ignore_errors=True)for p in sys.argv[1:]for sp in pathlib.Path().resolve().glob(p)]"
 BROWSER := $(PY) -c "import os,webbrowser,sys;from urllib.request import pathname2url;webbrowser.open('file:'+pathname2url(os.path.abspath(sys.argv[1])))"
 EXTRACT_HELP := $(PY) -c "import re,sys;m=[re.match(r'^([a-zA-Z_-]+):.*?\#\# (.*)$$',line)for line in sys.stdin];print('\n'.join('{:12} {}'.format(*g.groups())for g in m if g))"
 LS := $(PY) -c "import sys,os;print('\n'.join(os.listdir(os.path.abspath(sys.argv[1]))))"
+TOUCH := $(PY) -c "import sys;open(sys.argv[1], 'ab')"
+
+TOX=$(VENV)tox$(EXE)
+SPHINX=$(VENV)sphinx-build$(EXE)
+COVERAGE=$(VENV)coverage$(EXE)
+TWINE=$(VENV)twine$(EXE)
+PRECOMMIT=$(VENV)pre-commit$(EXE)
 
 
 # ----------------------------------------------------------------------
-# Commands
+# Automatic installation
 # ----------------------------------------------------------------------
-
-help:  ## Show current message
-	@$(EXTRACT_HELP) < $(MAKEFILE_LIST)
 
 .git:
 	$(GIT) init
@@ -103,49 +116,92 @@ help:  ## Show current message
 	$(GIT) commit -m "Initial commit"
 	$(GIT) branch -M main
 
-$(VENV_ACTIVATE): $(DEPS) .git
-	echo $(SHELL) $(SHELL_NAME)
-	$(MAKE) clean
-	$(PY) -m venv venv
-	$(VENV_PIP) install --upgrade pip
-	$(VENV_PIP) install -e .[dev]
-	$(VENV)pre-commit install
+$(MARKER): pyproject.toml .git
+	$(PY) -m virtualenv venv
+	$(VENV_PIP) install .[pre-commit]
+	$(VENV_PIP) install -e .
+	$(PRECOMMIT) install
+	$(TOUCH) $(MARKER)
 
-setup: $(VENV_ACTIVATE)  ## Create virtual environment and install all the stuff
+
+$(VENV): $(MARKER)
+
+$(VENV_PY): $(MARKER)
+
+$(VENV_PIP): $(MARKER)
+
+$(TOX): $(VENV_PIP)
+	$(VENV_PIP) install -e .[tox]
+
+$(PRECOMMIT): $(VENV_PIP)
+
+$(SPHINX): $(VENV_PIP)
+	$(VENV_PIP) install -e .[docs]
+
+$(COVERAGE): $(VENV_PIP)
+	$(VENV_PIP) install -e .[cov]
+
+$(TWINE): $(VENV_PIP)
+	$(VENV_PIP) install -e .[deploy]
+
+$(LIB)build: $(VENV_PIP)
+	$(VENV_PIP) install -e .[build]
+
+
+# ----------------------------------------------------------------------
+# Commands
+# ----------------------------------------------------------------------
+
+
+.PHONY: help setup clean purge format lint tests-all tests coverage docs open-docs dist release install
+.DEFAULT_GOAL := help
+
 
 clean:  ## Remove all build, test, coverage and Python artifacts
 	$(RM_GLOB) 'build/' 'dist/' 'public/' '.eggs/' '.tox/' '.coverage' 'htmlcov/' '.pytest_cache' '.mypy_cache' '.ruff_cache' '.venv' 'venv' '**/*.egg-info' '**/*.egg' '**/__pycache__' '**/*~' '**/*.pyc' '**/*.pyo'
 
-format: setup  ## Fromat style with pre-commit, ruff, black and mypy
-	$(VENV)pre-commit run --all-files
+coverage: $(COVERAGE)  ## Check code coverage
+	$(COVERAGE) run --source minelog -m pytest
+	$(COVERAGE) report -m
+	$(COVERAGE) html
 
-lint: setup  ## Check style with ruff, black and mypy
-	$(VENV)tox -e lint
+dist: clean $(LIB)build  ## Builds source and wheel package
+	$(VENV_PY) -m build
+	$(LS) dist/
 
-tests-all: setup  ## Run all tests
-	$(VENV)tox -p
+docs: $(BUILD) ## Generate Sphinx HTML documentation
+	$(BUILD) -W -b html docs public
 
-tests: setup  ## Run tests
-	$(VENV)tox -e tests
+format: $(PRECOMMIT)  ## Format style with pre-commit, ruff, black and mypy
+	$(PRECOMMIT) run --all-files
 
-coverage: setup  ## Check code coverage quickly with the default Python
-	$(VENV)coverage run --source minelog -m pytest
-	$(VENV)coverage report -m
-	$(VENV)coverage html
-	$(BROWSER) htmlcov/index.html
+help:  ## Show current message
+	@$(EXTRACT_HELP) < $(MAKEFILE_LIST)
 
-docs: setup  ## Generate Sphinx HTML documentation
-	$(VENV)sphinx-build -W -b html docs public
+install: clean  ## Install the package to the active Python's site-packages
+	$(PIP) install .
+
+lint: $(TOX)  ## Check style with ruff, black and mypy
+	$(TOX) -e lint
 
 open-docs: docs  ## Open docs
 	$(BROWSER) public/index.html
 
-dist: clean setup  ## Builds source and wheel package
-	$(VENV_PY) -m build
-	$(LS) dist/
+open-coverage: coverage  ## Open coverage rapport
+	$(BROWSER) htmlcov/index.html
 
-release: dist  ## Package and upload a release
-	$(VENV)twine upload dist/*
+pip-update: clean  ## Update outside pip
+	$(PIP) install -U pip
 
-install: clean  ## Install the package to the active Python's site-packages
-	$(PIP) install .
+release: dist $(TWINE)  ## Package and upload a release
+	$(TWINE) upload dist/*
+
+setup: $(VENV_PIP)  ## Create virtual environment and install all the stuff
+	$(VENV_PIP) install -e .[dev]
+	$(PRECOMMIT) install
+
+tests: $(TOX)  ## Run tests
+	$(TOX) -e tests
+
+tests-all: $(TOX)  ## Run all tests (docs, lint andtests)
+	$(TOX) -p

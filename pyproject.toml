@@ -78,7 +78,7 @@ minelog = "minelog.cli:minelog_cli"
 [project.optional-dependencies]
 tests = [
   "pytest>=7.0.0",
-  "pytest-mock>=3.10.0"
+  "pytest-mock>=3.10.0",
 ]
 cov = [
   "minelog[tests]",
@@ -86,29 +86,29 @@ cov = [
   "pytest-cov>=4.0.0",
 ]
 lint = [
-  "minelog[lint]",
+  "minelog[tests]",
   "black>=22.0.0",
   "mypy>=1.2.0",
-  "ruff>=0.0.262"
+  "ruff>=0.0.262",
 ]
 tox = [
-  "minelog[lint]",
-  "tox>=4.0.0"
+  "tox>=4.0.0",
 ]
 pre-commit = [
-  "minelog[tox]",
-  "pre-commit>=3.0.0"
+  "pre-commit>=3.0.0",
 ]
 docs = [
   "sphinx>=5.0.0",
-  "sphinx_rtd_theme>=1.2.0"
+  "sphinx_rtd_theme>=1.2.0",
 ]
-dist = [
+build = [
   "build>=0.10.0",
+]
+deploy = [
   "twine>=4.0.0",
 ]
 dev = [
-  "minelog[tests,cov,lint,tox,pre-commit,docs,dist]"
+  "minelog[tests,cov,lint,tox,pre-commit,docs,build,deploy]",
 ]
 
 # ----------------------------------------------------------------------
