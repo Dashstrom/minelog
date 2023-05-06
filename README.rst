@@ -59,7 +59,7 @@ Developpement installation
 
 ..  code-block:: bash
 
-    sudo apt update -y && sudo apt upgrade -y
+    sudo apt update -y && sudo apt upgrade -y && sudo apt-get install python3-pip
     git clone https://github.com/Dashstrom/minelog && cd minelog
     make setup
 

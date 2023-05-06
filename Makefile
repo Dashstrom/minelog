@@ -1,16 +1,33 @@
 # ----------------------------------------------------------------------
+# OS dependent configuration
+# ----------------------------------------------------------------------
+
+VENV=venv/bin/
+LIB=venv/Lib/site-packages/
+MARKER=venv/marker
+EXE=
+ifeq ($(OS),Windows_NT)
+VENV=venv/Scripts/
+LIB=venv/Lib/site-packages/
+MARKER=venv/marker
+EXE=.exe
+endif
+
+
+# ----------------------------------------------------------------------
 # Python interpreter detection
 # ----------------------------------------------------------------------
 
 ARG_COMMAND="import sys;print(sys.version_info>=(3, 8))"
 
 ifeq (ok,$(shell test -e /dev/null 2>&1 && echo ok))
-	NULL_STDERR=2>/dev/null
+NULL_STDERR=2>/dev/null
 else
-	NULL_STDERR=2>NUL
+NULL_STDERR=2>NUL
 endif
 
 ifndef PY
+
 ifndef _PY
 ifeq (True,$(shell py -3.8 -c $(ARG_COMMAND)  $(NULL_STDERR)))
 _PY=py -3.8
@@ -39,45 +56,20 @@ ifndef _PY
 ifeq (True,$(shell python -c $(ARG_COMMAND) $(NULL_STDERR)))
 PY=python
 endif
+
 endif
+
 ifndef _PY
 $(error Could not detect Python 3.8 or greather interpreter automatically, please use PY environment variable.)
 endif
-PY=$(shell $(_PY) -c "import sys;print(sys.base_prefix)")/python.exe
-endif
 
+PY=$(_PY)
+
+endif
 
 ifneq (True,$(shell $(PY) -c $(ARG_COMMAND) $(NULL_STDERR)))
-	$(error PY is not a valid Python 3.8 or greather interpreter)
+$(error $(PY) is not a valid Python 3.8 or greather interpreter)
 endif
-
-# ----------------------------------------------------------------------
-# OS dependent configuration
-# ----------------------------------------------------------------------
-
-BLANK :=
-SHELL_NAME=$(shell $(PY) -c 'import pathlib, sys;print(pathlib.Path(" ".join(sys.argv[1:])).name)' $(SHELL))
-VENV=venv/bin/
-LIB=venv/Lib/site-packages/
-MARKER=venv/marker
-EXE=
-ifeq (sh.exe,$(SHELL_NAME))
-	VENV=venv/Scripts/$(BLANK)
-	LIB=venv/Lib/site-packages/$(BLANK)
-	MARKER=venv/marker
-	EXE=.exe
-else ifeq (sh,$(SHELL_NAME))
-else ifeq (bash,$(SHELL_NAME))
-else ifeq (zsh,$(SHELL_NAME))
-else
-	ifeq (win32,$(shell $(PY) -c "print(__import__('sys').platform)"))
-		VENV=venv/Scripts/$(BLANK)
-		LIB=venv/Lib/site-packages/$(BLANK)
-		MARKER=venv/marker
-		EXE=.exe
-	endif
-endif
-
 
 # ----------------------------------------------------------------------
 # Configuration
@@ -146,7 +138,6 @@ $(LIB)build: $(VENV_PIP)
 # ----------------------------------------------------------------------
 # Commands
 # ----------------------------------------------------------------------
-
 
 .PHONY: help setup clean purge format lint tests-all tests coverage docs open-docs dist release install
 .DEFAULT_GOAL := help
