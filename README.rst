@@ -28,7 +28,7 @@ Script for find somethings easily in your minecraft logs.
 Install
 *******
 
-You can install "minelog" via `pip <https://pypi.org/project/pip/>`_ from `PyPI <https://pypi.org/project>`_
+You can install :bash:`minelog` via `pip <https://pypi.org/project/pip/>`_ from `PyPI <https://pypi.org/project>`_
 
 ..  code-block:: bash
 
@@ -41,8 +41,27 @@ Show all players IPs.
 
 ..  code-block:: bash
 
-    minelog -d "logs" -p "^.* ([a-zA-Z0-9_]+)\[\/(.*\d+(?:\.\d+){3}):\d+\].*$" -u -s -r "\1,\2"
-    minelog -d "logs" -p "^.*name=([a-zA-Z0-9_]+).*/(.*\d+(?:\.\d+){3}):\d+.*$" -u -s -r "\1,\2"
+    minelog -d logs -p '^.* ([a-zA-Z0-9_]+)\[\/(.*\d+(?:\.\d+){3}):\d+\].*$' -u -s -r '\1,\2'
+    minelog -d logs -p '^.*name=([a-zA-Z0-9_]+).*/(.*\d+(?:\.\d+){3}):\d+.*$' -u -s -r '\1,\2'
+
+See below the help message.
+
+..  code-block:: text
+
+    Usage: minelog [OPTIONS]
+
+      Script for find somethings easily in your minecraft logs.
+
+    Options:
+      --version             Show the version and exit.
+      -d, --directory PATH  Path to logs.
+      -p, --pattern TEXT    Pattern used for search log.
+      -r, --repl TEXT       Replacement of match.
+      -u, --unique          Return only unique match.
+      -s, --sort            Sort match in alphabetical order.
+      --help                Show this message and exit.
+
+      Copyright 2023, Dashstrom <dashstrom.pro@gmail.com>
 
 
 Developpement

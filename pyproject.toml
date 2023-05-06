@@ -23,7 +23,11 @@ maintainers  = [
   { name="Dashstrom", email="dashstrom.pro@gmail.com" },
 ]
 keywords = [
-  "python"
+  "python",
+  "minecraft",
+  "utility",
+  "script",
+  "logs"
 ]
 classifiers = [
   #"Development Status :: 1 - Planning",

@@ -29,20 +29,8 @@ endif
 ifndef PY
 
 ifndef _PY
-ifeq (True,$(shell py -3.8 -c $(ARG_COMMAND)  $(NULL_STDERR)))
-_PY=py -3.8
-endif
-endif
-
-ifndef _PY
 ifeq (True,$(shell py -3 -c $(ARG_COMMAND) $(NULL_STDERR)))
 _PY=py -3
-endif
-endif
-
-ifndef _PY
-ifeq (True,$(shell python3.8 -c $(ARG_COMMAND) $(NULL_STDERR)))
-_PY=python3.8
 endif
 endif
 
@@ -163,7 +151,7 @@ format: $(PRECOMMIT)  ## Format style with pre-commit, ruff, black and mypy.
 help:  ## Show current message.
 	@$(EXTRACT_HELP) < $(MAKEFILE_LIST)
 
-install: clean  ## Install the package to the active Python's site-packages.
+install:  ## Install the package to the active Python's site-packages.
 	$(PIP) install .
 
 lint: $(TOX)  ## Check style with tox, ruff, black and mypy.
