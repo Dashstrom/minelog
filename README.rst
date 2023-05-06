@@ -32,7 +32,6 @@ You can install "minelog" via `pip <https://pypi.org/project/pip/>`_ from `PyPI 
 
 ..  code-block:: bash
 
-    pip install -U pip setuptools virtualenv
     pip install minelog
 
 Usage
@@ -51,6 +50,7 @@ Developpement
 
 Contributing
 ------------
+
 Contributions are very welcome. Tests can be run with tox, please ensure
 the coverage at least stays the same before you submit a pull request.
 

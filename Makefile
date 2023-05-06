@@ -2,6 +2,8 @@
 # Python interpreter detection
 # ----------------------------------------------------------------------
 
+ARG_COMMAND="import sys;print(sys.version_info>=(3, 8))"
+
 ifeq (ok,$(shell test -e /dev/null 2>&1 && echo ok))
 	NULL_STDERR=2>/dev/null
 else
@@ -9,37 +11,37 @@ else
 endif
 
 ifndef PY
-	ifeq (1,$(shell py -3.8 -c "print(1)" $(NULL_STDERR)))
+	ifeq (True,$(shell py -3.8 -c $(ARG_COMMAND)  $(NULL_STDERR)))
 		PY=py -3.8
 	endif
 endif
 
 ifndef PY
-	ifeq (1,$(shell py -3 -c "print(1)" $(NULL_STDERR)))
+	ifeq (True,$(shell py -3 -c $(ARG_COMMAND) $(NULL_STDERR)))
 		PY=py -3
 	endif
 endif
 
 ifndef PY
-	ifeq (1,$(shell python3.8 -c "print(1)" $(NULL_STDERR)))
+	ifeq (True,$(shell python3.8 -c $(ARG_COMMAND) $(NULL_STDERR)))
 		PY=python3.8
 	endif
 endif
 
 ifndef PY
-	ifeq (1,$(shell python3 -c "print(1)" $(NULL_STDERR)))
+	ifeq (True,$(shell python3 -c $(ARG_COMMAND) $(NULL_STDERR)))
 		PY=python3
 	endif
 endif
 
 ifndef PY
-	ifeq (1,$(shell python -c "print(1)" $(NULL_STDERR)))
+	ifeq (True,$(shell python -c $(ARG_COMMAND) $(NULL_STDERR)))
 		PY=python
 	endif
 endif
 
 ifndef PY
-	$(error Could not detect Python interpreter automatically, please use PY environment variable.)
+	$(error Could not detect Python 3.8 or greather interpreter automatically, please use PY environment variable.)
 endif
 
 
@@ -117,12 +119,12 @@ PRECOMMIT=$(VENV)pre-commit$(EXE)
 	$(GIT) branch -M main
 
 $(MARKER): pyproject.toml .git
+	$(PIP) install virtualenv
 	$(PY) -m virtualenv venv
-	$(VENV_PIP) install .[pre-commit]
+	$(VENV_PIP) install .[requires,pre-commit]
 	$(VENV_PIP) install -e .
 	$(PRECOMMIT) install
 	$(TOUCH) $(MARKER)
-
 
 $(VENV): $(MARKER)
 
