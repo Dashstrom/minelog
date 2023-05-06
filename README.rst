@@ -1,3 +1,6 @@
+.. role:: bash(code)
+   :language: bash
+
 minelog
 =======
 
@@ -10,9 +13,6 @@ minelog
 .. image:: https://github.com/Dashstrom/minelog/actions/workflows/tests.yml/badge.svg
     :target: https://github.com/Dashstrom/minelog/actions/workflows/tests.yml
     :alt: CI : Tests
-.. image:: https://github.com/Dashstrom/minelog/actions/workflows/publish.yml/badge.svg
-    :target: https://github.com/Dashstrom/minelog/actions/workflows/publish.yml
-    :alt: CI : Publish
 .. image:: https://img.shields.io/pypi/v/minelog.svg
     :target: https://pypi.org/project/minelog
     :alt: PyPI : minelog
@@ -51,18 +51,16 @@ Developpement
 Contributing
 ------------
 
-Contributions are very welcome. Tests can be run with tox, please ensure
+Contributions are very welcome. Tests can be run with :bash:`make tests-all`, please ensure
 the coverage at least stays the same before you submit a pull request.
 
-Installation
-------------
+Developpement installation
+--------------------------
 
 ..  code-block:: bash
 
     sudo apt update -y && sudo apt upgrade -y
-    sudo apt install mypy python3.8-venv
     git clone https://github.com/Dashstrom/minelog && cd minelog
-    pip install -U pip setuptools virtualenv
     make setup
 
 Makefile
@@ -72,16 +70,21 @@ A Makefile is available for help you to run commands.
 
 ..  code-block:: text
 
-    help         show actual message
-    venv         create virtual environment
-    clean        remove all build, test, coverage and Python artifacts
-    lint         check style with pre-commit
-    test         run tests, lint and docs build
-    coverage     check code coverage quickly with the default Python
-    docs         generate Sphinx HTML documentation
-    release      package and upload a release
-    dist         builds source and wheel package
-    install      install the package to the active Python's site-packages
+    clean        Remove all build, test, coverage, venv and Python artifacts.
+    cov          Check code coverage.
+    dist         Builds source and wheel package.
+    docs         Generate Sphinx HTML documentation.
+    format       Format style with pre-commit, ruff, black and mypy.
+    help         Show current message.
+    install      Install the package to the active Python's site-packages.
+    lint         Check style with tox, ruff, black and mypy.
+    open-docs    Open documentation.
+    open-cov     Open coverage report.
+    recreate     Clean project and recrete venv.
+    release      Package and upload a release.
+    setup        Create virtual environment and install pre-commit.
+    tests        Run unit and functional tests.
+    tests-all    Run all tests in parallel (docs, lint and tests).
 
 License
 *******
