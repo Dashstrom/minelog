@@ -92,6 +92,7 @@ PRECOMMIT=$(VENV)pre-commit$(EXE)
 	$(GIT) branch -M main
 
 $(MARKER): pyproject.toml .git
+	$(MAKE) clean
 	$(PIP) install virtualenv
 	$(PY) -m virtualenv venv
 	$(VENV_PIP) install 'setuptools>=62.0.0' 'pip>=21.3'
