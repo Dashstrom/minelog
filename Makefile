@@ -68,7 +68,7 @@ PIP=$(PY) -m pip
 VENV_PY=$(VENV)python$(EXE)
 VENV_PIP=$(VENV)pip$(EXE)
 
-RM_GLOB := $(PY) -c "import shutil,sys,pathlib;[shutil.rmtree(sp, ignore_errors=True)for p in sys.argv[1:]for sp in pathlib.Path().resolve().glob(p)]"
+RM_GLOB := $(PY) -c "import shutil,sys,pathlib;[shutil.rmtree(sp, ignore_errors=False)for p in sys.argv[1:]for sp in pathlib.Path().resolve().glob(p)]"
 BROWSER := $(PY) -c "import os,webbrowser,sys;from urllib.request import pathname2url;webbrowser.open('file:'+pathname2url(os.path.abspath(sys.argv[1])))"
 EXTRACT_HELP := $(PY) -c "import re,sys;m=[re.match(r'^([a-zA-Z_-]+):.*?\#\# (.*)$$',line)for line in sys.stdin];print('\n'.join('{:12} {}'.format(*g.groups())for g in m if g))"
 LS := $(PY) -c "import sys,os;print('\n'.join(os.listdir(os.path.abspath(sys.argv[1]))))"
@@ -94,8 +94,8 @@ PRECOMMIT=$(VENV)pre-commit$(EXE)
 $(MARKER): pyproject.toml .git
 	$(PIP) install virtualenv
 	$(PY) -m virtualenv venv
-	$(VENV_PIP) install .[requires,pre-commit]
-	$(VENV_PIP) install -e .
+	$(VENV_PIP) install 'setuptools>=62.0.0' 'pip>=21.3'
+	$(VENV_PIP) install -e .[pre-commit,lint]
 	$(PRECOMMIT) install
 	$(TOUCH) $(MARKER)
 
@@ -131,7 +131,7 @@ $(LIB)build: $(VENV_PIP)
 .DEFAULT_GOAL := help
 
 clean:  ## Remove all build, test, coverage, venv and Python artifacts.
-	$(RM_GLOB) 'build/' 'dist/' 'public/' '.eggs/' '.tox/' '.coverage' 'htmlcov/' '.pytest_cache' '.mypy_cache' '.ruff_cache' '.venv' 'venv' '**/*.egg-info' '**/*.egg' '**/__pycache__' '**/*~' '**/*.pyc' '**/*.pyo'
+	$(RM_GLOB) 'venv/*/python.?e?x?e?' 'venv' 'build/' 'dist/' 'public/' '.eggs/' '.tox/' '.coverage' 'htmlcov/' '.pytest_cache' '.mypy_cache' '.ruff_cache'  '**/*.egg-info' '**/*.egg' '**/__pycache__' '**/*~' '**/*.pyc' '**/*.pyo'
 
 cov: $(COVERAGE)  ## Check code coverage.
 	$(COVERAGE) run --source minelog -m pytest
@@ -163,12 +163,10 @@ open-docs: docs  ## Open documentation.
 open-cov: cov  ## Open coverage report.
 	$(BROWSER) htmlcov/index.html
 
-recreate: clean setup ## Clean project and recrete venv.
-
 release: dist $(TWINE)  ## Package and upload a release.
 	$(TWINE) upload dist/*
 
-setup: $(VENV_PY)  ## Create virtual environment and install pre-commit.
+setup: clean $(VENV_PY)  ## Create virtual environment and install pre-commit.
 
 tests: $(TOX)  ## Run unit and functional tests.
 	$(TOX) -e tests

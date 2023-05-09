@@ -35,7 +35,7 @@ You can install :bash:`minelog` via `pip <https://pypi.org/project/pip/>`_ from 
     pip install minelog
 
 Usage
-*******
+*****
 
 Show all players IPs.
 
