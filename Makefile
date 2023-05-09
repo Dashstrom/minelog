@@ -96,7 +96,7 @@ $(MARKER): pyproject.toml .git
 	$(PIP) install virtualenv
 	$(PY) -m virtualenv venv
 	$(VENV_PIP) install 'setuptools>=62.0.0' 'pip>=21.3'
-	$(VENV_PIP) install -e .[pre-commit,lint,7z]
+	$(VENV_PIP) install -e .[pre-commit,lint]
 	$(PRECOMMIT) install
 	$(TOUCH) $(MARKER)
 
