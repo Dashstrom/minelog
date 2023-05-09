@@ -68,7 +68,7 @@ PIP=$(PY) -m pip
 VENV_PY=$(VENV)python$(EXE)
 VENV_PIP=$(VENV)pip$(EXE)
 
-RM_GLOB := $(PY) -c "import shutil,sys,pathlib;[shutil.rmtree(sp, ignore_errors=False) if sp.is_dir() else sp.unlink()for p in sys.argv[1:]for sp in pathlib.Path().resolve().glob(p)]"
+RM_GLOB := $(PY) -c "import shutil,sys,pathlib;[shutil.rmtree(sp, ignore_errors=False) if sp.is_dir() else sp.unlink() for p in sys.argv[1:]for sp in pathlib.Path().resolve().glob(p)]"
 BROWSER := $(PY) -c "import os,webbrowser,sys;from urllib.request import pathname2url;webbrowser.open('file:'+pathname2url(os.path.abspath(sys.argv[1])))"
 EXTRACT_HELP := $(PY) -c "import re,sys;m=[re.match(r'^([a-zA-Z_-]+):.*?\#\# (.*)$$',line)for line in sys.stdin];print('\n'.join('{:12} {}'.format(*g.groups())for g in m if g))"
 LS := $(PY) -c "import sys,os;print('\n'.join(os.listdir(os.path.abspath(sys.argv[1]))))"
@@ -96,7 +96,7 @@ $(MARKER): pyproject.toml .git
 	$(PIP) install virtualenv
 	$(PY) -m virtualenv venv
 	$(VENV_PIP) install 'setuptools>=62.0.0' 'pip>=21.3'
-	$(VENV_PIP) install -e .[pre-commit,lint]
+	$(VENV_PIP) install -e .[pre-commit,lint,7z]
 	$(PRECOMMIT) install
 	$(TOUCH) $(MARKER)
 
@@ -134,10 +134,8 @@ $(LIB)build: $(VENV_PIP)
 clean:  ## Remove all build, test, coverage, venv and Python artifacts.
 	$(RM_GLOB) 'venv/*/python.?e?x?e?' 'venv' 'build/' 'dist/' 'public/' '.eggs/' '.tox/' '.coverage' 'htmlcov/' '.pytest_cache' '.mypy_cache' '.ruff_cache'  '**/*.egg-info' '**/*.egg' '**/__pycache__' '**/*~' '**/*.pyc' '**/*.pyo'
 
-cov: $(COVERAGE)  ## Check code coverage.
-	$(COVERAGE) run --source minelog -m pytest
-	$(COVERAGE) report -m
-	$(COVERAGE) html
+cov: $(TOX)  ## Check code coverage.
+	tox -e cov
 
 dist: clean $(LIB)build  ## Builds source and wheel package.
 	$(VENV_PY) -m build
