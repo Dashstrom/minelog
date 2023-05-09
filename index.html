@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>minelog &mdash; minelog.info 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="References" href="references.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            minelog.info
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">minelog.info</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">minelog</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="minelog">
+<h1>minelog<a class="headerlink" href="#minelog" title="Permalink to this heading"></a></h1>
+<a class="reference external image-reference" href="https://github.com/Dashstrom/minelog/actions/workflows/docs.yml"><img alt="CI : Docs" src="https://github.com/Dashstrom/minelog/actions/workflows/docs.yml/badge.svg" /></a>
+<a class="reference external image-reference" href="https://github.com/Dashstrom/minelog/actions/workflows/lint.yml"><img alt="CI : Lint" src="https://github.com/Dashstrom/minelog/actions/workflows/lint.yml/badge.svg" /></a>
+<a class="reference external image-reference" href="https://github.com/Dashstrom/minelog/actions/workflows/tests.yml"><img alt="CI : Tests" src="https://github.com/Dashstrom/minelog/actions/workflows/tests.yml/badge.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/minelog"><img alt="PyPI : minelog" src="https://img.shields.io/pypi/v/minelog.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/minelog"><img alt="Python : versions" src="https://img.shields.io/pypi/pyversions/minelog.svg" /></a>
+<a class="reference external image-reference" href="https://github.com/Dashstrom/minelog/blob/main/LICENSE"><img alt="License : GNU GPL v3.0" src="https://img.shields.io/badge/license-GNU%20GPL%20v3.0-green.svg" /></a>
+<p>Script for find somethings easily in your minecraft logs.</p>
+<section id="install">
+<h2>Install<a class="headerlink" href="#install" title="Permalink to this heading"></a></h2>
+<p>You can install <code class="code highlight bash docutils literal highlight-bash">minelog</code> via <a class="reference external" href="https://pypi.org/project/pip/">pip</a> from <a class="reference external" href="https://pypi.org/project">PyPI</a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>minelog
+</pre></div>
+</div>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
+<p>Show all players IPs.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>minelog<span class="w"> </span>-d<span class="w"> </span>logs<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;^.* ([a-zA-Z0-9_]+)\[\/(.*\d+(?:\.\d+){3}):\d+\].*$&#39;</span><span class="w"> </span>-u<span class="w"> </span>-s<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;\1,\2&#39;</span>
+minelog<span class="w"> </span>-d<span class="w"> </span>logs<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;^.*name=([a-zA-Z0-9_]+).*/(.*\d+(?:\.\d+){3}):\d+.*$&#39;</span><span class="w"> </span>-u<span class="w"> </span>-s<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;\1,\2&#39;</span>
+</pre></div>
+</div>
+<p>See below the help message.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Usage: minelog [OPTIONS]
+
+  Script for find somethings easily in your minecraft logs.
+
+Options:
+  --version             Show the version and exit.
+  -d, --directory PATH  Path to logs.
+  -p, --pattern TEXT    Pattern used for search log.
+  -r, --repl TEXT       Replacement of match.
+  -u, --unique          Return only unique match.
+  -s, --sort            Sort match in alphabetical order.
+  --help                Show this message and exit.
+
+  Copyright 2023, Dashstrom &lt;dashstrom.pro@gmail.com&gt;
+</pre></div>
+</div>
+</section>
+<section id="developpement">
+<h2>Developpement<a class="headerlink" href="#developpement" title="Permalink to this heading"></a></h2>
+<section id="contributing">
+<h3>Contributing<a class="headerlink" href="#contributing" title="Permalink to this heading"></a></h3>
+<p>Contributions are very welcome. Tests can be run with <code class="code highlight bash docutils literal highlight-bash">make<span class="w"> </span>tests-all</code>, please ensure
+the coverage at least stays the same before you submit a pull request.</p>
+</section>
+<section id="developpement-installation">
+<h3>Developpement installation<a class="headerlink" href="#developpement-installation" title="Permalink to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span>-y<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>upgrade<span class="w"> </span>-y<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>python3-pip
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Dashstrom/minelog<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>minelog
+make<span class="w"> </span>setup
+</pre></div>
+</div>
+</section>
+<section id="makefile">
+<h3>Makefile<a class="headerlink" href="#makefile" title="Permalink to this heading"></a></h3>
+<p>A Makefile is available for help you to run commands.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>clean        Remove all build, test, coverage, venv and Python artifacts.
+cov          Check code coverage.
+dist         Builds source and wheel package.
+docs         Generate Sphinx HTML documentation.
+format       Format style with pre-commit, ruff, black and mypy.
+help         Show current message.
+install      Install the package to the active Python&#39;s site-packages.
+lint         Check style with tox, ruff, black and mypy.
+open-docs    Open documentation.
+open-cov     Open coverage report.
+recreate     Clean project and recrete venv.
+release      Package and upload a release.
+setup        Create virtual environment and install pre-commit.
+tests        Run unit and functional tests.
+tests-all    Run all tests in parallel (docs, lint and tests).
+</pre></div>
+</div>
+</section>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this heading"></a></h2>
+<p>This work is licensed under <a class="reference external" href="https://github.com/Dashstrom/minelog/blob/main/LICENSE">GNU GPL v3.0</a>.</p>
+<section id="contents">
+<h3>Contents<a class="headerlink" href="#contents" title="Permalink to this heading"></a></h3>
+<div class="toctree-wrapper compound">
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="references.html#minelog.MineLog"><code class="docutils literal notranslate"><span class="pre">MineLog</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="references.html#minelog.MineLog.compile"><code class="docutils literal notranslate"><span class="pre">MineLog.compile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#minelog.MineLog.itermatch"><code class="docutils literal notranslate"><span class="pre">MineLog.itermatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#minelog.MineLog.iteropen"><code class="docutils literal notranslate"><span class="pre">MineLog.iteropen()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#minelog.MineLog.search_bytes"><code class="docutils literal notranslate"><span class="pre">MineLog.search_bytes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="indices-and-tables">
+<h3>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="references.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2023, Dashstrom &lt;dashstrom.pro@gmail.com&gt;.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
