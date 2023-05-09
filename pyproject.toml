@@ -29,6 +29,8 @@ keywords = [
   "script",
   "logs"
 ]
+
+# See https://pypi.org/classifiers/
 classifiers = [
   #"Development Status :: 1 - Planning",
   #"Development Status :: 2 - Pre-Alpha",
@@ -63,10 +65,12 @@ classifiers = [
 
   "Typing :: Typed"
 ]
+
 dependencies = [
     "click>=8.1.3",
     "typing-extensions>=4.5.0",
 ]
+
 dynamic = ["version"]
 
 [project.urls]
@@ -138,23 +142,40 @@ legacy_tox_ini = """
 min_version = 4.0
 envlist = lint,docs,tests
 
+[testenv]
+deps = .[tests]
+commands =
+  pytest
+
 [testenv:lint]
 deps = .[lint]
 commands =
   ruff check .
   black --diff .
   mypy .
-
-[testenv]
-deps = .[tests]
+  
+[testenv:cov]
+deps = .[cov]
 commands =
-  pytest
+	coverage run --source {envsitepackagesdir}/minelog -m pytest
+	coverage report -m
+	coverage html
 
 [testenv:docs]
 deps = .[docs]
 commands =
   sphinx-build -W -b html -d {envtmpdir}/doctrees docs {envtmpdir}/public
 """
+
+# ----------------------------------------------------------------------
+# Pytest
+# https://docs.pytest.org/en/7.3.x/
+# ----------------------------------------------------------------------
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "DEBUG"
+asyncio_mode = "auto"
 
 
 # ----------------------------------------------------------------------
@@ -228,6 +249,9 @@ max-complexity = 10
 [tool.black]
 line-length = 79
 target-version = ["py311", "py310", "py39", "py38"]
+
+# Enable linting on pyi files
+include = "\\.pyi?$"
 
 
 # ----------------------------------------------------------------------
