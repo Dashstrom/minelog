@@ -1,7 +1,7 @@
 .. include:: ../README.rst
 
 Contents
---------
+########
 
 .. toctree::
 
@@ -9,7 +9,7 @@ Contents
    references
 
 Indices and tables
-------------------
+##################
 
 * :ref:`genindex`
 * :ref:`modindex`
