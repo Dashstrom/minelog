@@ -68,7 +68,7 @@ PIP=$(PY) -m pip
 VENV_PY=$(VENV)python$(EXE)
 VENV_PIP=$(VENV)pip$(EXE)
 
-RM_GLOB := $(PY) -c "import shutil,sys,pathlib;[shutil.rmtree(sp, ignore_errors=False)for p in sys.argv[1:]for sp in pathlib.Path().resolve().glob(p)]"
+RM_GLOB := $(PY) -c "import shutil,sys,pathlib;[shutil.rmtree(sp, ignore_errors=False) if sp.is_dir() else sp.unlink()for p in sys.argv[1:]for sp in pathlib.Path().resolve().glob(p)]"
 BROWSER := $(PY) -c "import os,webbrowser,sys;from urllib.request import pathname2url;webbrowser.open('file:'+pathname2url(os.path.abspath(sys.argv[1])))"
 EXTRACT_HELP := $(PY) -c "import re,sys;m=[re.match(r'^([a-zA-Z_-]+):.*?\#\# (.*)$$',line)for line in sys.stdin];print('\n'.join('{:12} {}'.format(*g.groups())for g in m if g))"
 LS := $(PY) -c "import sys,os;print('\n'.join(os.listdir(os.path.abspath(sys.argv[1]))))"
