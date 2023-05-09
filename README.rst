@@ -1,8 +1,9 @@
 .. role:: bash(code)
    :language: bash
 
+#######
 minelog
-=======
+#######
 
 .. image:: https://github.com/Dashstrom/minelog/actions/workflows/docs.yml/badge.svg
     :target: https://github.com/Dashstrom/minelog/actions/workflows/docs.yml
@@ -26,7 +27,7 @@ minelog
 Script for find somethings easily in your minecraft logs.
 
 Install
-*******
+#######
 
 You can install :bash:`minelog` via `pip <https://pypi.org/project/pip/>`_ from `PyPI <https://pypi.org/project>`_
 
@@ -35,7 +36,7 @@ You can install :bash:`minelog` via `pip <https://pypi.org/project/pip/>`_ from 
     pip install minelog
 
 Usage
-*****
+#####
 
 Show all players IPs.
 
@@ -65,16 +66,16 @@ See below the help message.
 
 
 Developpement
-*************
+#############
 
 Contributing
-------------
+************
 
 Contributions are very welcome. Tests can be run with :bash:`make tests-all`, please ensure
 the coverage at least stays the same before you submit a pull request.
 
 Developpement installation
---------------------------
+**************************
 
 ..  code-block:: bash
 
@@ -83,7 +84,7 @@ Developpement installation
     make setup
 
 Makefile
---------
+********
 
 A Makefile is available for help you to run commands.
 
@@ -104,8 +105,34 @@ A Makefile is available for help you to run commands.
     setup        Create virtual environment and install pre-commit.
     tests        Run unit and functional tests.
     tests-all    Run all tests in parallel (docs, lint and tests).
+   
+Troubleshooting
+###############
+
+Your scripts in not on your path
+********************************
+
+You can't directly run :bash:`minelog`. Add your path to your library as below.
+
+..  code-block:: sh
+
+  echo 'export PATH="$PATH:$HOME/.local/bin' >> ~/.bashrc
+  source ~/.bashrc
+
+or use :bash:`minelog` as module
+
+..  code-block:: sh
+
+  python3 -m minelog --version
+  
+Uninstall
+#########
+
+..  code-block:: sh
+
+  python3 -m pip uninstall minelog
 
 License
-*******
+#######
 
 This work is licensed under `GNU GPL v3.0 <https://github.com/Dashstrom/minelog/blob/main/LICENSE>`_.
