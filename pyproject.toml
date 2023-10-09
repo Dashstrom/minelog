@@ -68,7 +68,6 @@ classifiers = [
 
 dependencies = [
     "click>=8.1.3",
-    "typing-extensions>=4.5.0",
 ]
 
 dynamic = ["version"]
@@ -153,7 +152,7 @@ commands =
   ruff check .
   black --diff .
   mypy .
-  
+
 [testenv:cov]
 deps = .[cov]
 commands =
