@@ -44,7 +44,7 @@ def verbosity(func: Callable[P, T]) -> Callable[P, T]:
     return wrapper
 
 
-@click.group(
+@click.command(
     name="minelog",
     help=__summary__,
 )
