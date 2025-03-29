@@ -10,19 +10,19 @@ from typing import IO, Callable, Optional, Union, cast
 RE_FILE_ARCHIVE_GROUP = re.compile(
     r"^(?P<date>20[0-9]{2}-[01][0-9]-[0-3][0-9])-(?P<number>[0-9]{1,2}).log.gz$",
 )
-MC_ENCODING = "cp1252"
+MC_ENCODING = "utf-8"
 RegexType = Union[bytes, "re.Pattern[bytes]"]
 ReplType = Union[bytes, Callable[["re.Match[bytes]"], bytes]]
 
 
 def minecraft_path() -> pathlib.Path:
     """Return the path to minecraft folder."""
-    home = pathlib.Path.home()
+    home = pathlib.Path.home().resolve()
     if platform.system() == "Darwin":
         return home / "Library" / "Application Support " / "minecraft"
     if platform.system() == "Windows":
         return home / "AppData" / "Roaming" / ".minecraft"
-    return home / ".minecraft"
+    return pathlib.Path.cwd().resolve()
 
 
 class LogEntry:
@@ -64,6 +64,12 @@ class MineLog:
             self.folder = minecraft_path() / "logs"
         else:
             self.folder = path
+        if not self.folder.is_dir():
+            error_message = (
+                f"{self.folder!r} is not a directory, "
+                "please specify a valid one."
+            )
+            raise NotADirectoryError(error_message)
 
     def compile(self, pattern: RegexType, /) -> "re.Pattern[bytes]":
         """Compile the regex."""
