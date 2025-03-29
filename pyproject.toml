@@ -1,267 +1,246 @@
-# ----------------------------------------------------------------------
-# Packaging :
-# https://packaging.python.org/en/latest/tutorials/packaging-projects
-# ----------------------------------------------------------------------
-
-[build-system]
-requires = [
-  "setuptools>=67.0.0",
-  "wheel"
-]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "minelog"
-description = "Script for find something easily in your minecraft logs."
-readme = "README.rst"
-requires-python = ">=3.8"
-license.file = "LICENSE"
+version = "0.0.1"
+description = "Script for query easily your minecraft logs."
 authors = [
-  { name="Dashstrom", email="dashstrom.pro@gmail.com" },
+    { name = "Dashstrom", email = "dashstrom.pro@gmail.com" }
 ]
-maintainers  = [
-  { name="Dashstrom", email="dashstrom.pro@gmail.com" },
-]
-keywords = [
-  "python",
-  "minecraft",
-  "utility",
-  "script",
-  "logs"
-]
+readme = "README.rst"
+keywords = ["python"]
+requires-python = ">=3.9,<4.0"
 
 # See https://pypi.org/classifiers/
 classifiers = [
-  #"Development Status :: 1 - Planning",
-  #"Development Status :: 2 - Pre-Alpha",
-  "Development Status :: 3 - Alpha",
-  #"Development Status :: 4 - Beta",
-  #"Development Status :: 5 - Production/Stable",
-  #"Development Status :: 6 - Mature",
-  #"Development Status :: 7 - Inactive",
 
-  "Environment :: Console",
+    #"Development Status :: 1 - Planning",
+    #"Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 3 - Alpha",
+    #"Development Status :: 4 - Beta",
+    #"Development Status :: 5 - Production/Stable",
+    #"Development Status :: 6 - Mature",
+    #"Development Status :: 7 - Inactive",
 
-  "Framework :: Pytest",
-  "Framework :: Sphinx",
-  "Framework :: tox",
+    # Default usage
+    "Environment :: Console",
 
-  "Intended Audience :: Developers",
-  "Intended Audience :: System Administrators",
+    # Framework used
+    "Framework :: Pytest",
+    "Framework :: Sphinx",
 
-  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    # Indicate who your project is intended for
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
 
-  "Natural Language :: English",
+    # Target OS
+    "Operating System :: OS Independent",
 
-  "Operating System :: OS Independent",
+    # What is the language used in this project
+    "Natural Language :: English",
 
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3 :: Only",
+    # Version available for this project
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
 
-  "Typing :: Typed"
+    # What is the language used in the project
+    "Natural Language :: English",
+
+    # License used in this project
+    "License :: OSI Approved :: MIT License",
+
+    # The project is typed
+    "Typing :: Typed"
 ]
-
 dependencies = [
-    "click>=8.1.3",
+    "click>=8.1.0",
+    "typing-extensions>=4.8.0",
 ]
-
-dynamic = ["version"]
 
 [project.urls]
 Homepage = "https://github.com/Dashstrom/minelog"
-Issues = "https://github.com/Dashstrom/minelog/issues"
-Documentation = "https://github.com/Dashstrom/minelog"
-Source = "https://github.com/Dashstrom/minelog"
-
+Repository = "https://github.com/Dashstrom/minelog"
+Documentation = "https://dashstrom.github.io/minelog"
 
 [project.scripts]
 minelog = "minelog.cli:minelog_cli"
 
-[project.optional-dependencies]
-tests = [
-  "pytest>=7.0.0",
-  "pytest-mock>=3.10.0",
-]
-cov = [
-  "minelog[tests]",
-  "coverage[toml]>=6.5.0",
-  "pytest-cov>=4.0.0",
-]
-lint = [
-  "minelog[tests]",
-  "black>=22.0.0",
-  "mypy>=1.2.0",
-  "ruff>=0.0.262",
-]
-tox = [
-  "tox>=4.0.0",
-]
-pre-commit = [
-  "pre-commit>=3.0.0",
-]
-docs = [
-  "sphinx>=5.0.0",
-  "sphinx_rtd_theme>=1.2.0",
-]
-build = [
-  "build>=0.10.0",
-]
-deploy = [
-  "twine>=4.0.0",
-]
+[dependency-groups]
 dev = [
-  "minelog[tests,cov,lint,tox,pre-commit,docs,build,deploy]",
+    "pytest==8.3.5",
+    "pytest-mock==3.14.0",
+    "coverage[toml]==7.6.12",
+    "pytest-cov==6.0.0",
+    "mypy==1.15.0",
+    "ruff==0.9.10",
+    "pre-commit==4.1.0",
+    "pre-commit-hooks==5.0.0",
+    "sphinx==7.4.7",
+    "sphinx-rtd-theme==3.0.2",
+    "sphinxcontrib-mermaid==1.0.0",
+    "poethepoet==0.33.0",
+    "commitizen==4.4.1",
 ]
 
-# ----------------------------------------------------------------------
-# Setuptools :
-# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
-# ----------------------------------------------------------------------
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.setuptools]
-packages = ["minelog"]
-
-[tool.setuptools.dynamic]
-version = {attr = "minelog.info.__version__"}
-
+py-modules = ["minelog"]
 
 # ----------------------------------------------------------------------
-# Tox :
-# https://pypi.org/project/tox
+# Poe the Poet
+# https://poethepoet.natn.io/index.html
 # ----------------------------------------------------------------------
 
-[tool.tox]
-legacy_tox_ini = """
-[tox]
-min_version = 4.0
-envlist = lint,docs,tests
+[tool.poe.tasks.test]
+help = "Run test suite."
+cmd = "pytest"
 
-[testenv]
-deps = .[tests]
-commands =
-  pytest
+[tool.poe.tasks.lint]
+help = "Run linters: ruff checker and ruff formatter and mypy."
+sequence = [
+  { cmd = "ruff check ." },
+  { cmd = "ruff format --diff ." },
+  { cmd = "mypy ." },
+]
+ignore_fail = true
 
-[testenv:lint]
-deps = .[lint]
-commands =
-  ruff check .
-  black --diff .
-  mypy .
+[tool.poe.tasks.format]
+help = "Run linters in fix mode."
+sequence = [
+  { cmd = "ruff check --fix ." },
+  { cmd = "ruff format ." },
+  { cmd = "mypy ." },
+]
+ignore_fail = true
 
-[testenv:cov]
-deps = .[cov]
-commands =
-	coverage run --source {envsitepackagesdir}/minelog -m pytest
-	coverage report -m
-	coverage html
+[tool.poe.tasks.check]
+help = "Run all checks: lint, test and docs."
+sequence = [
+  { ref = "lint" },
+  { ref = "test" },
+  { ref = "docs" },
+]
 
-[testenv:docs]
-deps = .[docs]
-commands =
-  sphinx-build -W -b html -d {envtmpdir}/doctrees docs {envtmpdir}/public
+[tool.poe.tasks.check-tag]
+help = "Check if the current tag match the version."
+expr = """
+sys.exit(
+    subprocess.run(
+        ['git', 'describe', '--exact-match', '--tags'],
+        text=True,
+        stderr=subprocess.DEVNULL,
+        stdout=subprocess.PIPE,
+    ).stdout.strip()
+    != 'v' + minelog.__version__
+)
 """
+imports = ["minelog", "subprocess", "os"]
+
+[tool.poe.tasks.cov]
+help = "Run coverage for generate report and html."
+sequence = [
+  { cmd = "coverage run -m pytest" },
+  { cmd = "coverage report" },
+  { cmd = "coverage html" },
+]
+
+[tool.poe.tasks.open-cov]
+help = "Open html coverage report in webbrowser."
+deps = ["cov"]
+expr = "webbrowser.open('file:'+urllib.request.pathname2url(os.path.abspath('htmlcov/index.html')),new=2)"
+imports = ["os", "webbrowser", "sys", "urllib.request"]
+
+[tool.poe.tasks.docs]
+help = "Build documentation."
+cmd = "sphinx-build -W -b html docs public"
+
+[tool.poe.tasks.open-docs]
+help = "Open documentation in webbrowser."
+deps = ["docs"]
+expr = "webbrowser.open('file:'+urllib.request.pathname2url(os.path.abspath('public/index.html')),new=2)"
+imports = ["os", "webbrowser", "sys", "urllib.request"]
+
+[tool.poe.tasks.setup]
+help = "Setup pre-commit."
+cmd = "pre-commit install"
+
+[tool.poe.tasks.pre-commit]
+help = "Run pre-commit."
+cmd = "pre-commit run --all-files"
+
+[tool.poe.tasks.commit]
+help = "Test, commit and push."
+sequence = [
+  { ref = "check" },
+  { cmd = "git add ." },
+  { cmd = "cz c" },
+  { cmd = "git push" },
+]
+
+[tool.poe.tasks.clean]
+help = "Clean cache files."
+expr = """[
+  shutil.rmtree(path, ignore_errors=False)
+  if path.is_dir()
+  else path.unlink()
+  for pattern in [
+    'build/',
+    'dist/',
+    'public/',
+    '.eggs/',
+    '.tox/',
+    '.coverage',
+    'htmlcov/',
+    '.pytest_cache',
+    '.mypy_cache',
+    '.ruff_cache',
+    '**/*.egg-info',
+    '**/*.egg',
+    '**/__pycache__',
+    '**/*~',
+    '**/*.pyc',
+    '**/*.pyo'
+  ]
+  for path in pathlib.Path().resolve().glob(pattern)
+]"""
+imports = ["shutil", "sys", "pathlib"]
+
 
 # ----------------------------------------------------------------------
 # Pytest
-# https://docs.pytest.org/en/7.3.x/
+# https://docs.pytest.org
 # ----------------------------------------------------------------------
 
 [tool.pytest.ini_options]
 log_cli = true
-log_cli_level = "DEBUG"
-asyncio_mode = "auto"
+log_cli_level = "INFO"
+addopts = "-vv --doctest-modules"
+doctest_optionflags = "DONT_ACCEPT_TRUE_FOR_1 NORMALIZE_WHITESPACE IGNORE_EXCEPTION_DETAIL ELLIPSIS"
+#asyncio_mode = "auto"
 
 
 # ----------------------------------------------------------------------
-# Ruff :
-# https://pypi.org/project/ruff
+# Coverage
+# https://coverage.readthedocs.io/en/7.3.2/config.html
 # ----------------------------------------------------------------------
 
-[tool.ruff]
-select = [
-  "A", "B", "C", "D", "E", "F", "G", "I","N", "Q", "S", "T", "W", "ANN",
-  "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN",
-  "INP", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI",
-  "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"
-]
-# D203 and D211 are incompatible
-# D212 and D213 are incompatible
-# D400 [*] First line should end with a period
-# T201 `print` found
-# T203 `pprint` found
-# ANN101 Missing type annotation for `self` in method
-# D105 Missing docstring in magic method
-# A003 Class attribute `compile` is shadowing a python builtin
-ignore = ["D203", "D213", "T201", "T203", "ANN101", "D105", "A003"]
-exclude = [
-  ".bzr",
-  ".direnv",
-  ".eggs",
-  ".git",
-  ".hg",
-  ".mypy_cache",
-  ".nox",
-  ".pants.d",
-  ".pytype",
-  ".ruff_cache",
-  ".svn",
-  ".tox",
-  ".venv",
-  "__pypackages__",
-  "_build",
-  "buck-out",
-  "build",
-  "dist",
-  "node_modules",
-  "venv",
-]
-line-length = 79
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-target-version = "py38"
-
-[tool.ruff.per-file-ignores]
-# E402 Module level import not at top of file
-# INP001 File `docs\conf.py` is part of an implicit namespace package.
-# A001 Variable `copyright` is shadowing a python builtin
-# PTH100 `os.path.abspath()` should be replaced by `Path.resolve()`
-"docs/conf.py" = ["E402", "INP001", "A001", "PTH100"]
-# S101 Use of `assert` detected
-# S603 `subprocess` call: check for execution of untrusted input
-# S607 Starting a process with a partial executable path
-"tests/*.py" = ["S101", "S603", "S607"]
-
-[tool.ruff.mccabe]
-# Unlike Flake8, default to a complexity level of 10.
-max-complexity = 10
+[tool.coverage.run]
+source = ["minelog"]
 
 
 # ----------------------------------------------------------------------
-# Black :
-# https://pypi.org/project/black
-# ----------------------------------------------------------------------
-
-[tool.black]
-line-length = 79
-target-version = ["py311", "py310", "py39", "py38"]
-
-# Enable linting on pyi files
-include = "\\.pyi?$"
-
-
-# ----------------------------------------------------------------------
-# Mypy :
+# Mypy
 # https://pypi.org/project/mypy
 # ----------------------------------------------------------------------
 
 [tool.mypy]
-python_version = 3.8
-strict = true
-show_error_codes = true
+python_version = 3.9
 exclude = [
   ".bzr",
   ".direnv",
@@ -287,9 +266,9 @@ exclude = [
 enable_error_code = ["ignore-without-code", "truthy-bool", "redundant-expr"]
 
 # Disallow dynamic typing
-disallow_any_unimported = true
-disallow_any_expr = false
-disallow_any_decorated = false
+disallow_any_unimported = false
+disallow_any_expr = false  # All attribut of argparse.Namespace are Any
+disallow_any_decorated = false  # Too many package doesn't have typed decorator
 disallow_any_generics = true
 disallow_subclassing_any = true
 
@@ -298,13 +277,13 @@ disallow_untyped_calls = true
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
 check_untyped_defs = true
-disallow_untyped_decorators = false
+disallow_untyped_decorators = false  # Too many decorator are untyped
 
 # None and optional handling
 no_implicit_optional = true
 
 # Configuring warnings
-warn_unused_ignores = false
+warn_unused_ignores = true
 warn_no_return = true
 warn_return_any = true
 warn_redundant_casts = true
@@ -314,3 +293,103 @@ strict_equality = true
 
 # Config file
 warn_unused_configs = true
+
+# Exemple for missing types
+#[[tool.mypy.overrides]]
+#module = ["numpy.*"]
+#ignore_missing_imports = true
+
+
+# ----------------------------------------------------------------------
+# Ruff
+# https://pypi.org/project/ruff
+# ----------------------------------------------------------------------
+
+[tool.ruff]
+line-length = 79
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["ALL"]
+# D203 and D211 are incompatible
+# D212 and D213 are incompatible
+# D400 [*] First line should end with a period
+# D101 Missing docstring in public class
+# We dont use ANN : flake8-annotations because we already have mypy
+ignore = ["D203", "D213", "D400", "D101", "ANN", "COM812", "ISC001"]
+fixable = ["ALL"]
+unfixable = []
+exclude = [
+  ".bzr",
+  ".direnv",
+  ".eggs",
+  ".git",
+  ".hg",
+  ".mypy_cache",
+  ".nox",
+  ".pants.d",
+  ".pytype",
+  ".ruff_cache",
+  ".svn",
+  ".tox",
+  ".venv",
+  "__pypackages__",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "node_modules",
+  "venv",
+]
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.per-file-ignores]
+# INP001 File `docs\conf.py` is part of an implicit namespace package. Add an `__init__.py`.
+# A001 Variable `copyright` is shadowing a python builtin
+# PTH100 `os.path.abspath()` should be replaced by `Path.resolve()`
+"docs/conf.py" = ["INP001", "A001", "PTH100"]
+# S101 Use of `assert` detected
+# S603 `subprocess` call: check for execution of untrusted input
+"tests/*.py" = ["S101", "S603"]
+# Q003 [*] Change outer quotes to avoid escaping inner quotes
+# E501 Line too long
+"*/info.py" = ["Q003", "E501"]
+# E501 Line too long
+"*/__main__.py" = ["E501"]
+# INP001 File `benchmarks/*.py` is part of an implicit namespace package. Add an `__init__.py`.
+"benchmarks/*.py" = ["INP001"]
+# INP001 File `scripts/*.py` is part of an implicit namespace package. Add an `__init__.py`.
+"scripts/*.py" = ["INP001"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["minelog"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.pyupgrade]
+# Preserve types, even if a file imports `from __future__ import annotations`.
+keep-runtime-typing = true
+
+[tool.ruff.lint.mccabe]
+# Unlike Flake8, default to a complexity level of 12.
+max-complexity = 12
+
+
+# ----------------------------------------------------------------------
+# Pylint
+# https://pylint.pycqa.org/en/latest/index.html
+# ----------------------------------------------------------------------
+
+# We dont use pylint, so we disabled it
+[tool.pylint.main]
+ignore-patterns = ["*"]
+
+
+# ----------------------------------------------------------------------
+# Black
+# https://black.readthedocs.io/en/stable/
+# ----------------------------------------------------------------------
+
+[tool.black]
+exclude="*"

@@ -3,27 +3,33 @@ name: publish
 on:
   push:
     tags:
-      - '**'
+      - "**"
 
 jobs:
   publish:
     name: Publish on PyPI
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/minelog
+    permissions:
+      id-token: write
     steps:
-      - uses: actions/checkout@v3
 
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.8"
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-      - name: Run all tests with Make
-        run: make tests-all
+      - name: Set up project and environment
+        uses: ./.github/actions/setup-project
 
-      - name: Build dist with Make
-        run: make dist
+      - name: Check the tag
+        run: uv run poe check-tag
+
+      - name: Runn all tests
+        run: uv run poe check
+
+      - name: Build package
+        run: uv build
 
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          password: ${{ secrets.PYPI_API_TOKEN }}

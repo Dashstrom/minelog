@@ -1,5 +1,6 @@
-"""Main entrypoint for package."""
+"""Entrypoint with `python -m minelog`."""
+
 from .cli import minelog_cli
 
 if __name__ == "__main__":
-    minelog_cli()  # pylint: disable=no-value-for-parameter,missing-kwoa
+    minelog_cli()  # pragma: no cover

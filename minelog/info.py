@@ -1,10 +1,18 @@
-"""Module for package information."""
+"""Module holding metadata."""
 
+from importlib.metadata import Distribution
 
-__author__ = "Dashstrom"
-__maintainer__ = "Dashstrom"
-__description__ = "Script for find somethings easily in your minecraft logs."
-__email__ = "dashstrom.pro@gmail.com"
-__version__ = "0.0.1"
-__copyright__ = "Copyright 2023, Dashstrom <dashstrom.pro@gmail.com>"
-__license__ = "GNU GPL v3.0"
+_DISTRIBUTION = Distribution.from_name(
+    "minelog",
+)
+_METADATA = _DISTRIBUTION.metadata
+
+if "Author" in _METADATA:
+    __author__ = str(_METADATA["Author"])
+    __email__ = str(_METADATA["Author-email"])
+else:
+    __author__, __email__ = _METADATA["Author-email"][:-1].split(" <", 1)
+__version__ = _METADATA["Version"]
+__summary__ = _METADATA["Summary"]
+__copyright__ = f"{__author__} <{__email__}>"
+__issues__ = "https://github.com/Dashstrom/minelog/issues"

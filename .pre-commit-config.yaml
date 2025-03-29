@@ -1,26 +1,50 @@
-exclude: '^(\.tox|\.mypy|\.git)(/|$)'
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: 'v4.4.0'
+  # https://github.com/pre-commit/pre-commit-hooks
+  - repo: local
     hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
-      - id: debug-statements
-      - id: requirements-txt-fixer
-      - id: check-yaml
-      - id: check-json
-      - id: check-toml
-  - repo: https://github.com/psf/black
-    rev: '23.3.0'
+    - id: trailing-whitespace
+      name: trim trailing whitespace
+      entry: uv run trailing-whitespace-fixer
+      language: system
+      types: [text]
+      stages: [pre-commit, pre-push, manual]
+    - id: end-of-file-fixer
+      name: fix end of files
+      entry: uv run end-of-file-fixer
+      language: system
+      types: [text]
+      stages: [pre-commit, pre-push, manual]
+    - id: check-yaml
+      name: check yaml
+      entry: uv run check-yaml
+      language: system
+      types: [yaml]
+    - id: check-json
+      name: check json
+      entry: uv run check-json
+      language: system
+      types: [json]
+      exclude: "^.vscode"
+    - id: check-toml
+      name: check toml
+      entry: uv run check-toml
+      language: system
+      types: [toml]
+  # https://github.com/commitizen-tools/commitizen
+  - repo: local
     hooks:
-      - id: black
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.0.262'
+    - id: commitizen
+      name: commitizen check
+      entry: uv run cz check
+      args: [--allow-abort, --commit-msg-file]
+      stages: [commit-msg]
+      language: system
+  # https://github.com/astral-sh/ruff-pre-commit
+  - repo: local
     hooks:
-      - id: ruff
-        args: [--fix, --exit-non-zero-on-fix]
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: 'v1.2.0'
-    hooks:
-      - id: mypy
-        additional_dependencies: ['.[lint]']
+    - id: poe-format
+      name: ruff linter, ruff formatter and mypy
+      entry: uv run poe format
+      language: system
+      pass_filenames: false
+      types: [python]

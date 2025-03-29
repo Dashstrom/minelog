@@ -5,12 +5,11 @@ Contents
 
 .. toctree::
 
-   Home <self>
+   User Guide <self>
    references
 
-Indices and tables
-##################
+Index
+#####
 
 * :ref:`genindex`
 * :ref:`modindex`
-* :ref:`search`

@@ -1,1 +1,1 @@
-"""Package for tests."""
+"""Package for test project."""

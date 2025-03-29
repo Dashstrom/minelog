@@ -4,29 +4,21 @@ For the full list of built-in configuration values, see the documentation:
 https://www.sphinx-doc.org/en/master/usage/configuration.html
 """
 
-# -- Path setup --------------------------------------------------------------
-
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-#
+# -- Project information -----------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 import os
 import sys
+from typing import Optional
+
+import minelog as info
 
 sys.path.insert(0, os.path.abspath(".."))
 
-
-# -- Project information -----------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-
-import minelog.info
-
-project = minelog.info.__name__
-copyright = minelog.info.__copyright__
-author = minelog.info.__author__
-version = minelog.info.__version__
-release = minelog.info.__version__
-
+project = info.__name__
+copyright = f"{info.__author__} <{info.__email__}>"
+author = info.__author__
+version = info.__version__
+release = info.__version__
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -34,17 +26,40 @@ release = minelog.info.__version__
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
+    "sphinx.ext.napoleon",
     "sphinx_rtd_theme",
+    "sphinxcontrib.mermaid",
 ]
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "**tests**"]
-source_suffix = ".rst"
 todo_include_todos = False
+if os.path.exists("resources/favicon.png"):  # noqa: PTH110
+    html_favicon: Optional[str] = "resources/favicon.png"
+elif os.path.exists("resources/favicon.jpg"):  # noqa: PTH110
+    html_favicon = "resources/favicon.jpg"
+else:
+    html_favicon = None
+# If no docstring, inherit from base class
+autodoc_inherit_docstrings = True
+# Remove 'view source code' from top of page (for html, not python)
+html_show_sourcelink = False
+# Enable 'expensive' imports for sphinx_autodoc_typehints
+set_type_checking_flag = True
+
+# Napoleon settings
+napoleon_google_docstring = True
+napoleon_numpy_docstring = False
+napoleon_include_init_with_doc = True
+napoleon_include_private_with_doc = False
+napoleon_include_special_with_doc = True
+napoleon_use_admonition_for_examples = False
+napoleon_use_admonition_for_notes = True
+napoleon_use_admonition_for_references = True
+autodoc_typehints = "description"
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "sphinx_rtd_theme"
 html_static_path = ["resources"]
-

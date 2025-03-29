@@ -6,14 +6,18 @@ on:
 jobs:
   lint:
     name: Lint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v4
+      - uses: actions/cache@v4
         with:
-          python-version: "3.8"
+          path: ~/.cache/pre-commit
+          key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
 
-      - name: Run linting with Make
-        run: make lint
+      - name: Set up project and environment
+        uses: ./.github/actions/setup-project
+
+      - name: Run linting
+        run: uv run poe lint

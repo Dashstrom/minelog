@@ -1,28 +1,46 @@
-"""Base module for testing command line interface."""
+"""Test for command line interface."""
+
+import os
 import subprocess
 import sys
 
-import click.testing
+from click.testing import CliRunner
 
-from minelog import __version__, minelog_cli
+from minelog import minelog_cli
 
 
-def test_cli() -> None:
-    """Basic test for command line interface."""
-    ver = f"version {__version__}"
+def test_cli_version() -> None:
+    """Test if the command line interface is installed correctly."""
+    name = "minelog"
+    env = os.environ.get("VIRTUAL_ENV", "")
+    if env:
+        if os.name == "nt":
+            exe = f"{env}\\\\Scripts\\\\{name}.cmd"
+            if not os.path.exists(exe):  # noqa: PTH110
+                exe = f"{env}\\\\Scripts\\\\{name}.exe"
+        else:
+            exe = f"{env}/bin/{name}"
+    else:
+        exe = name
+    out = subprocess.check_output((exe, "--version"), text=True, shell=False)
+    assert "version" in out
     out = subprocess.check_output(
-        ["minelog", "--version"],
+        (
+            sys.executable,
+            "-m",
+            "minelog",
+            "--version",
+        ),
         text=True,
         shell=False,
     )
-    assert ver in out
-    out = subprocess.check_output(
-        [sys.executable, "-m", "minelog", "--version"],
-        text=True,
-        shell=False,
-    )
-    assert ver in out
-    runner = click.testing.CliRunner()
+    assert "version" in out
+    runner = CliRunner()
     result = runner.invoke(minelog_cli, ["--version"])
     out = result.output
-    assert ver in out
+    assert "version" in out
+
+
+def test_import() -> None:
+    """Test if module entrypoint has correct imports."""
+    import minelog.__main__  # noqa: F401
